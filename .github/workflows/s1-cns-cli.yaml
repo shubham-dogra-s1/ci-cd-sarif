@@ -30,7 +30,7 @@ jobs:
         run: git config --global --add safe.directory $PWD
 
       - name: Run Secret Detector
-        run:  s1-cns-cli --output-format SARIF --output-file secret.sarif scan secret -d $PWD --pull-request origin/$SRC $DEST
+        run:  s1-cns-cli --output-format SARIF --output-file secrets.sarif scan secret -d $PWD --pull-request origin/$SRC $DEST
         env:
           DEST: ${{ github.event.pull_request.base.sha }}
           SRC: ${{ github.event.pull_request.head.ref }}
