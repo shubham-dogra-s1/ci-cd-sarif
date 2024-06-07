@@ -30,16 +30,16 @@ jobs:
         run: git config --global --add safe.directory $PWD
 
       - name: Run Secret Detector
-        run:  s1-cns-cli scan secret -d $PWD --pull-request origin/$SRC $DEST --output-format SARIF --output-file secrets.sarif
+        run:  s1-cns-cli --output-format SARIF --output-file secret.sarif scan secret -d $PWD --pull-request origin/$SRC $DEST
         env:
           DEST: ${{ github.event.pull_request.base.sha }}
           SRC: ${{ github.event.pull_request.head.ref }}
 
       - name: Run Iac Scanner
-        run:  s1-cns-cli scan iac -d $PWD --output-format SARIF --output-file secrets.sarif
+        run:  s1-cns-cli --output-format SARIF --output-file iac.sarif scan iac -d $PWD
 
       - name: Run Vuln Scanner
-        run:  s1-cns-cli scan vuln --docker-image node:latest --output-format SARIF --output-file vuln.sarif
+        run:  s1-cns-cli --output-format SARIF --output-file vuln.sarif scan vuln --docker-image node:latest
 
       - name: Upload Secret SARIF file
         uses: github/codeql-action/upload-sarif@v2
